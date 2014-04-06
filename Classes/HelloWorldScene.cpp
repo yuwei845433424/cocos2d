@@ -48,6 +48,15 @@ void runAnimatie(node *targetNode)
 		CCFiniteTimeAction * animate = CCAnimate::create(animation);
 		targetNode->runAction(animate);
 }
+bool HelloWorld::touchGetNode(node *sprite,CCTouch* touch,int tag)
+{
+		
+		CCPoint touchPoint = touch->getLocationInView();     
+		touchPoint = CCDirector::sharedDirector()->convertToGL( touchPoint );         
+		CCRect rc1 = sprite->boundingBox(); 
+		if(rc1.containsPoint(touchPoint)) return true;
+		else return false;
+}
 CCScene* HelloWorld::scene()
 {
 	// 'scene' is an autorelease object
@@ -136,14 +145,10 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 	for (tag = 1;tag<=node::amount;tag++)     
 	{   
 		node* sprite= (node*)this->getChildByTag(tag);   
-		CCPoint touchPoint = touch->getLocationInView();     
-		touchPoint = CCDirector::sharedDirector()->convertToGL( touchPoint );         
-		CCRect rc1 = sprite->boundingBox();        
-		if (rc1.containsPoint(touchPoint))
+		if (touchGetNode(sprite,touch,tag))
 		{   
 			targetNode = sprite;
 			runAnimatie(targetNode);
-
 			node::start = false;
 			node::beforeTag = sprite->tag;
 			return true;         
@@ -153,17 +158,16 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 	else{
 		for (tag = 1;tag<=node::amount;tag++)     
 		{   
-		node* sprite= (node*)this->getChildByTag(tag);   
-		CCPoint touchPoint = touch->getLocationInView();     
-		touchPoint = CCDirector::sharedDirector()->convertToGL( touchPoint );         
-		CCRect rc1 = sprite->boundingBox();        
-		if (rc1.containsPoint(touchPoint))
+			node* sprite= (node*)this->getChildByTag(tag);   
+		if (touchGetNode(sprite,touch,tag))
 		{   
 			targetNode = sprite;
 			node::currentTag = sprite->tag;
 			if(node::a[node::beforeTag][node::currentTag]==1)
 			{
 			runAnimatie(targetNode);
+//实现算法："如果不是第一个点，则当前点为i，触摸到点（j）的时候如果可连（a[i][j]==1）时，
+//将触摸点记录（即为i），a[i][j]=0,a[j][i]=0;触摸点开始闪，之前点停止闪烁"
 			node::a[node::beforeTag][node::currentTag]=0;
 			node::a[node::currentTag][node::beforeTag]=0;
 			node::count++;
@@ -172,8 +176,6 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 			node::beforeTag = sprite->tag;
 			return true;
 			}
-			
-
 		}
 	}
 		
@@ -183,18 +185,7 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 		for(int i =1;i<=5;i++)
 		{
 			node *blinkNode = (node*)this->getChildByTag(i);
-
-			CCAnimation* animation = CCAnimation::create();
-			animation->addSpriteFrameWithFileName("jd.png");
-			animation->addSpriteFrameWithFileName("jd~.png");
-
-			animation->setDelayPerUnit(2.8f / 14.0f);//必须设置否则不会动态播放
-			animation->setRestoreOriginalFrame(true);//是否回到第一帧
-			animation->setLoops(-1);//重复次数 （-1:无限循环
-			CCFiniteTimeAction * animate = CCAnimate::create(animation);
-			
-			blinkNode ->runAction(animate);
-		
+			runAnimatie(blinkNode);
 		}
 	return false;   
 	
@@ -202,6 +193,41 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 
 void HelloWorld::ccTouchMoved(CCTouch* touch, CCEvent* event){
 	CCLOG("ccTouchMoved");
+	int tag ;
+	node *targetNode;
+	if(node::start==false)
+	{
+		for (tag = 1;tag<=node::amount;tag++)     
+		{   
+			node* sprite= (node*)this->getChildByTag(tag);   
+		if (touchGetNode(sprite,touch,tag))
+		{   
+			targetNode = sprite;
+			node::currentTag = sprite->tag;
+			if(node::a[node::beforeTag][node::currentTag]==1)
+			{
+			runAnimatie(targetNode);
+//实现算法："如果不是第一个点，则当前点为i，触摸到点（j）的时候如果可连（a[i][j]==1）时，
+//将触摸点记录（即为i），a[i][j]=0,a[j][i]=0;触摸点开始闪，之前点停止闪烁"
+			node::a[node::beforeTag][node::currentTag]=0;
+			node::a[node::currentTag][node::beforeTag]=0;
+			node::count++;
+			node *bnode =(node*)this->getChildByTag(node::beforeTag);
+			bnode->stopAllActions();  
+			node::beforeTag = sprite->tag;
+			
+			
+		}
+	}
+		
+	}
+	}
+	if(node::count == 7)
+		for(int i =1;i<=5;i++)
+		{
+			node *blinkNode = (node*)this->getChildByTag(i);
+			runAnimatie(blinkNode);
+		}
 	strike->setPosition(touch->getLocation());
 }
 

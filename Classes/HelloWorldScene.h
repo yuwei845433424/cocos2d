@@ -1,11 +1,13 @@
 #ifndef __HELLOWORLD_SCENE_H__
 #define __HELLOWORLD_SCENE_H__
 #include "cocos2d.h"
+#include "node.h"
 USING_NS_CC;
 class HelloWorld : public cocos2d::CCLayer
 {
 public:
 	CCMotionStreak* strike;
+	bool touchGetNode(node *sprite,CCTouch* touch,int tag);
 	//响应触屏动作
 	//重写触屏回调函数
     virtual bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
