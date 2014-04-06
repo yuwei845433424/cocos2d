@@ -1,12 +1,12 @@
 #include "HelloWorldScene.h"
 #include"node.h"
 USING_NS_CC;
-int a[6][6];
-bool start = true;
-int beforeTag = 0;
-int currentTag = 0;
-int count = 0;
+int node::a[6][6];
 int node::amount = 0;
+bool node::start = true;
+int node::beforeTag = 0;
+int node::currentTag = 0;
+int node::count = 0;
 void shuzu(int a[6][6])
 {
 	a[1][2] = 1;
@@ -81,7 +81,7 @@ bool HelloWorld::init()
 			);
 		addChild(strike,1);
 		strike->setPosition(ccp(240,160));
-	shuzu(a);
+	shuzu(node::a);
 	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
 	CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 		// add "HelloWorld" splash screen"
@@ -131,7 +131,7 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 	node *targetNode;
 	CCPoint point = touch->getLocation();
 	int tag ;
-	if(start==true)
+	if(node::start==true)
 	{
 	for (tag = 1;tag<=node::amount;tag++)     
 	{   
@@ -144,8 +144,8 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 			targetNode = sprite;
 			runAnimatie(targetNode);
 
-			start = false;
-			beforeTag = sprite->tag;
+			node::start = false;
+			node::beforeTag = sprite->tag;
 			return true;         
 		}
 	}
@@ -160,16 +160,16 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 		if (rc1.containsPoint(touchPoint))
 		{   
 			targetNode = sprite;
-			currentTag = sprite->tag;
-			if(a[beforeTag][currentTag]==1)
+			node::currentTag = sprite->tag;
+			if(node::a[node::beforeTag][node::currentTag]==1)
 			{
 			runAnimatie(targetNode);
-			a[beforeTag][currentTag]=0;
-			a[currentTag][beforeTag]=0;
-			count++;
-			node *bnode =(node*)this->getChildByTag(beforeTag);
+			node::a[node::beforeTag][node::currentTag]=0;
+			node::a[node::currentTag][node::beforeTag]=0;
+			node::count++;
+			node *bnode =(node*)this->getChildByTag(node::beforeTag);
 			bnode->stopAllActions();  
-			beforeTag = sprite->tag;
+			node::beforeTag = sprite->tag;
 			return true;
 			}
 			
@@ -179,7 +179,7 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 		
 	}
 	//成功后所有点闪
-	if(count == 6)
+	if(node::count == 6)
 		for(int i =1;i<=5;i++)
 		{
 			node *blinkNode = (node*)this->getChildByTag(i);
