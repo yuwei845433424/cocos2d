@@ -5,7 +5,7 @@ draw movie
 
 这里是小游戏一笔画电影的仓库
 
-由于github只能托管代码，所以我就把自己写的所有代码（都在classes里面）所在的classes文件传到github上面了，至于resourese，暂时发在群里面把。。。
+由于github只能托管代码，所以我就把自己写的所有代码（都在classes里面）所在的classes文件传到github上面了，至于resourese，不知道怎么办。。。
 
 工作进度：
 
