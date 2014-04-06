@@ -1,4 +1,4 @@
-#include "HelloWorldScene.h"
+#include "DrawMovieScene.h"
 #include"node.h"
 USING_NS_CC;
 int node::a[6][6];
@@ -48,7 +48,7 @@ void runAnimatie(node *targetNode)
 		CCFiniteTimeAction * animate = CCAnimate::create(animation);
 		targetNode->runAction(animate);
 }
-bool HelloWorld::touchGetNode(node *sprite,CCTouch* touch,int tag)
+bool DrawMovie::touchGetNode(node *sprite,CCTouch* touch,int tag)
 {
 		
 		CCPoint touchPoint = touch->getLocationInView();     
@@ -57,13 +57,13 @@ bool HelloWorld::touchGetNode(node *sprite,CCTouch* touch,int tag)
 		if(rc1.containsPoint(touchPoint)) return true;
 		else return false;
 }
-CCScene* HelloWorld::scene()
+CCScene* DrawMovie::scene()
 {
 	// 'scene' is an autorelease object
 	CCScene *scene = CCScene::create();
 	
 	// 'layer' is an autorelease object
-	HelloWorld *layer = HelloWorld::create();
+	DrawMovie *layer = DrawMovie::create();
 
 	// add layer as a child to scene
 	scene->addChild(layer);
@@ -73,7 +73,7 @@ CCScene* HelloWorld::scene()
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool DrawMovie::init()
 {
 
 	//////////////////////////////
@@ -93,7 +93,7 @@ bool HelloWorld::init()
 	shuzu(node::a);
 	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
 	CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
-		// add "HelloWorld" splash screen"
+		// add "DrawMovie" splash screen"
 	CCSprite* pSprite = CCSprite::create("up.png");
 
 	// position the sprite on the center of the screen
@@ -115,13 +115,13 @@ bool HelloWorld::init()
 
 	return true;
 }
-void HelloWorld::onEnter(){
+void DrawMovie::onEnter(){
 	
 	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this,0,false);
 	CCLayer::onEnter();
 }
 
-void HelloWorld::onExit(){
+void DrawMovie::onExit(){
 	
 	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
 	CCLayer::onExit();
@@ -133,7 +133,7 @@ void HelloWorld::onExit(){
 若成功触摸7个线段，所有点开始亮
 
 */
-bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
+bool DrawMovie::ccTouchBegan(CCTouch* touch, CCEvent* event)
 {
 	strike->setPosition(touch->getLocation());
 	CCLOG("ccTouchBegan");
@@ -191,7 +191,7 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 	
 }
 
-void HelloWorld::ccTouchMoved(CCTouch* touch, CCEvent* event){
+void DrawMovie::ccTouchMoved(CCTouch* touch, CCEvent* event){
 	CCLOG("ccTouchMoved");
 	int tag ;
 	node *targetNode;
@@ -231,7 +231,7 @@ void HelloWorld::ccTouchMoved(CCTouch* touch, CCEvent* event){
 	strike->setPosition(touch->getLocation());
 }
 
-void HelloWorld::ccTouchEnded(CCTouch* touch, CCEvent* event)
+void DrawMovie::ccTouchEnded(CCTouch* touch, CCEvent* event)
 {
 	CCLOG("ccTouchEnded");
 
@@ -239,7 +239,7 @@ void HelloWorld::ccTouchEnded(CCTouch* touch, CCEvent* event)
 }
 
 
-void HelloWorld::menuCloseCallback(CCObject* pSender)
+void DrawMovie::menuCloseCallback(CCObject* pSender)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
 	CCMessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
