@@ -34,6 +34,20 @@ void shuzu(int a[6][6])
 	a[5][4] = 0;
 
 }
+//闪烁动画
+void runAnimatie(node *targetNode)
+{
+		CCAnimation* animation = CCAnimation::create();
+		animation->addSpriteFrameWithFileName("jd.png");
+		animation->addSpriteFrameWithFileName("jd~.png");
+
+		animation->setDelayPerUnit(2.8f / 14.0f);//必须设置否则不会动态播放
+		animation->setRestoreOriginalFrame(true);//是否回到第一帧
+		animation->setLoops(-1);//重复次数 （-1:无限循环）
+		
+		CCFiniteTimeAction * animate = CCAnimate::create(animation);
+		targetNode->runAction(animate);
+}
 CCScene* HelloWorld::scene()
 {
 	// 'scene' is an autorelease object
@@ -52,14 +66,22 @@ CCScene* HelloWorld::scene()
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-	shuzu(a);
+
 	//////////////////////////////
 	// 1. super init first
 	if ( !CCLayer::init() )
 	{
 		return false;
 	}
-
+	this->strike=CCMotionStreak::create(1.0f,//尾巴持续的时间
+			16.0f,//尾巴大小
+			16.0f,//图片的大小
+			ccc3(255,255,0),//颜色
+			"jd.png"//使用的图片
+			);
+		addChild(strike,1);
+		strike->setPosition(ccp(240,160));
+	shuzu(a);
 	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
 	CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 		// add "HelloWorld" splash screen"
@@ -104,8 +126,9 @@ void HelloWorld::onExit(){
 */
 bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 {
-	node *targetNode;
+	strike->setPosition(touch->getLocation());
 	CCLOG("ccTouchBegan");
+	node *targetNode;
 	CCPoint point = touch->getLocation();
 	int tag ;
 	if(start==true)
@@ -119,17 +142,8 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 		if (rc1.containsPoint(touchPoint))
 		{   
 			targetNode = sprite;
+			runAnimatie(targetNode);
 
-			CCAnimation* animation = CCAnimation::create();
-			animation->addSpriteFrameWithFileName("jd.png");
-			animation->addSpriteFrameWithFileName("jd~.png");
-
-			animation->setDelayPerUnit(2.8f / 14.0f);//必须设置否则不会动态播放
-			animation->setRestoreOriginalFrame(true);//是否回到第一帧
-			animation->setLoops(-1);//重复次数 （-1:无限循环）
-		
-			CCFiniteTimeAction * animate = CCAnimate::create(animation);
-			targetNode->runAction(animate);
 			start = false;
 			beforeTag = sprite->tag;
 			return true;         
@@ -149,16 +163,7 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 			currentTag = sprite->tag;
 			if(a[beforeTag][currentTag]==1)
 			{
-			CCAnimation* animation = CCAnimation::create();
-			animation->addSpriteFrameWithFileName("jd.png");
-			animation->addSpriteFrameWithFileName("jd~.png");
-
-			animation->setDelayPerUnit(2.8f / 14.0f);//必须设置否则不会动态播放
-			animation->setRestoreOriginalFrame(true);//是否回到第一帧
-			animation->setLoops(-1);//重复次数 （-1:无限循环）
-		
-			CCFiniteTimeAction * animate = CCAnimate::create(animation);
-			targetNode->runAction(animate);
+			runAnimatie(targetNode);
 			a[beforeTag][currentTag]=0;
 			a[currentTag][beforeTag]=0;
 			count++;
@@ -197,42 +202,14 @@ bool HelloWorld::ccTouchBegan(CCTouch* touch, CCEvent* event)
 
 void HelloWorld::ccTouchMoved(CCTouch* touch, CCEvent* event){
 	CCLOG("ccTouchMoved");
+	strike->setPosition(touch->getLocation());
 }
 
 void HelloWorld::ccTouchEnded(CCTouch* touch, CCEvent* event)
 {
 	CCLOG("ccTouchEnded");
 
-	//targetNode = getChildByTag();
-	//获取离开屏幕时对应的坐标
-  /*  CCPoint point = touch->getLocation();
-	
-	//获取到tag=922的精灵
-	for(int i=0;i<10;i++)
-	{
-		touchNumber[i]=1;
-	
-	//如果是第一次点击精灵则精灵会闪光
-	if(touchNumber[i] == 1&&point.x>(x[i]-3)&&point.x<(x[i]+3)&&point.y>(y[i]-3)&&point.x<(y[i]+3)){
-		//通过标签获得精灵对象的指针
-		CCSprite* sp = (CCSprite*)this->getChildByTag(i);
-	//暂停所有动作
-		sp->stopAllActions();  
-	
-		CCAnimation* animation = CCAnimation::create();
-		animation->addSpriteFrameWithFileName("jd.png");
-		animation->addSpriteFrameWithFileName("jd~.png");
 
-		animation->setDelayPerUnit(2.8f / 14.0f);//必须设置否则不会动态播放
-		animation->setRestoreOriginalFrame(true);//是否回到第一帧
-		animation->setLoops(-1);//重复次数 （-1:无限循环）
-		
-		CCFiniteTimeAction * animate = CCAnimate::create(animation);
-		sp->runAction(animate);
-	}
-	touchNumber[i]++;
-	}
-	*/
 }
 
 
