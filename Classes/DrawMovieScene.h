@@ -6,7 +6,11 @@ USING_NS_CC;
 class DrawMovie : public cocos2d::CCLayer
 {
 public:
+	//声明拖尾类
 	CCMotionStreak* strike;
+	//划线函数
+	void drawLine(node *p1,node *p2);
+	void drawLines();
 	bool touchGetNode(node *sprite,CCTouch* touch,int tag);
 	//响应触屏动作
 	//重写触屏回调函数
