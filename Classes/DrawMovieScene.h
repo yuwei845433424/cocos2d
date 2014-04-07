@@ -11,7 +11,8 @@ public:
 	//划线函数
 	void drawLine(node *p1,node *p2);
 	void drawLines();
-	bool touchGetNode(node *sprite,CCTouch* touch,int tag);
+	bool isTouchGetNode(node *sprite,CCTouch* touch,int tag);
+	void lineAnimate(node *sprite);
 	//响应触屏动作
 	//重写触屏回调函数
 	virtual bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);

@@ -44,7 +44,6 @@ void shuzu(int a[6][6])
 
 }
 
-
 //闪烁动画
 
 void runAnimate(node *targetNode)
@@ -73,7 +72,30 @@ void runAnimate(line *targetLine)
 		CCFiniteTimeAction * animate = CCAnimate::create(animation);
 		targetLine->runAction(animate);
 }
-bool DrawMovie::touchGetNode(node *sprite,CCTouch* touch,int tag)
+void DrawMovie::lineAnimate(node *targetNode)
+{
+	if(node::a[node::beforeTag][node::currentTag]==1)
+	{
+		node *beforeNode = (node *)this->getChildByTag(node::beforeTag);
+		int beforeNodeTag = beforeNode->tag,targetNodeTag = targetNode->tag;
+		//使beforeNodeTag为较小的tag
+		if(beforeNodeTag>targetNodeTag)
+		{
+			int c=beforeNodeTag;
+			beforeNodeTag =	targetNodeTag;
+			targetNodeTag = c;
+		}
+		int lineTag = beforeNodeTag*100+targetNodeTag;
+		line *targetLine = (line *)this->getChildByTag(lineTag);
+		runAnimate(targetLine);
+		line::beforeTag = lineTag;
+
+
+	}
+
+}
+//用矩形将精灵包起来，然后通过判断触摸的点的position是否在矩形内判断是否触碰到了精灵
+bool DrawMovie::isTouchGetNode(node *sprite,CCTouch* touch,int tag)
 {
 		
 		CCPoint touchPoint = touch->getLocationInView();     
@@ -139,16 +161,16 @@ bool DrawMovie::init()
 	this->addChild(node5,0,node5->tag);
 	//创建lines
 	line **lines = (line**)new line;
-	int k = 0;
+	int xLine = 0;
 	for(int i = 1;i<=node::amount;i++)
 		for(int j=i+1;j<=node::amount;j++)
 			if(node::a[i][j]==1)
 			{
-				k++;	
+				xLine++;	
 				node* nodeI = (node*)this->getChildByTag(i);
 				node* nodeJ = (node*)this->getChildByTag(j);
-				lines[k]=line::create(nodeI,nodeJ);
-				this->addChild(lines[k],0,lines[k]->tag);
+				lines[xLine]=line::create(nodeI,nodeJ);
+				this->addChild(lines[xLine],0,lines[xLine]->tag);
 			}
 	
 	return true;
@@ -180,63 +202,42 @@ bool DrawMovie::ccTouchBegan(CCTouch* touch, CCEvent* event)
 	int tag ;
 	if(node::start==true)
 	{
-	for (tag = 1;tag<=node::amount;tag++)     
-	{   
-		node* sprite= (node*)this->getChildByTag(tag);   
-		if (touchGetNode(sprite,touch,tag))
+		for (tag = 1;tag<=node::amount;tag++)     
 		{   
-			targetNode = sprite;
-			runAnimate(targetNode);
-			node::start = false;
-			node::beforeTag = sprite->tag;
-			return true;         
+			node* sprite= (node*)this->getChildByTag(tag);   
+			if (isTouchGetNode(sprite,touch,tag))
+			{   
+				targetNode = sprite;
+				runAnimate(targetNode);
+				node::start = false;
+				node::beforeTag = sprite->tag;
+				return true;         
+			}
 		}
-	}
 	}
 	else{
 		for (tag = 1;tag<=node::amount;tag++)     
 		{   
 			node* sprite= (node*)this->getChildByTag(tag);   
-		if (touchGetNode(sprite,touch,tag))
+		if (isTouchGetNode(sprite,touch,tag))
 		{   
-			targetNode = sprite;
+			sprite = sprite;
 			node::currentTag = sprite->tag;
-			if(node::a[node::beforeTag][node::currentTag]==1)
-			{
-				node *beforeNode = (node *)this->getChildByTag(node::beforeTag);
-				int beforeNodeTag = beforeNode->tag,targetNodeTag = targetNode->tag;
-				//使beforeNodeTag为较小的tag
-				if(beforeNodeTag>targetNodeTag)
-				{
-					int c=beforeNodeTag;
-					beforeNodeTag =	targetNodeTag;
-					targetNodeTag = c;
-				}
-				int lineTag = beforeNodeTag*100+targetNodeTag;
-				line *targetLine = (line *)this->getChildByTag(lineTag);
-				runAnimate(targetNode);
-				
+			lineAnimate(sprite);
+			runAnimate(sprite);	
+
 //实现算法："如果不是第一个点，则当前点为i，触摸到点（j）的时候如果可连（a[i][j]==1）时，
-//将触摸点记录（即为i），a[i][j]=0,a[j][i]=0;触摸点开始闪，之前点停止闪烁"
-				//添加记录了line的beforeTag
-				node::a[node::beforeTag][node::currentTag]=0;
-				node::a[node::currentTag][node::beforeTag]=0;
-				node::count++;
-				node *bnode =(node*)this->getChildByTag(node::beforeTag);
-				bnode->stopAllActions(); 
-				runAnimate(targetLine);
-				if(line::beforeTag!=0)
-				{
-					line *bline = (line*)this->getChildByTag(line::beforeTag);
-					bline->stopAllActions();
-				}
-				node::beforeTag = sprite->tag;
-				line::beforeTag = lineTag;
-				return true;
+//将触摸点记录（即为i），a[i][j]=0,a[j][i]=0;触摸点开始闪，之前点停止闪烁"	
+			node::a[node::beforeTag][node::currentTag]=0;
+			node::a[node::currentTag][node::beforeTag]=0;
+			node::count++;
+			node *bnode =(node*)this->getChildByTag(node::beforeTag);
+			bnode->stopAllActions(); 
+			//添加记录了line的beforeTag	
+			node::beforeTag = sprite->tag;
+			return true;
 			}
-		}
-	}
-		
+		}	
 	}
 	//成功后所有点闪
 	if(node::count == 7)
@@ -246,7 +247,6 @@ bool DrawMovie::ccTouchBegan(CCTouch* touch, CCEvent* event)
 			runAnimate(blinkNode);
 		}
 	return false;   
-	
 }
 
 void DrawMovie::ccTouchMoved(CCTouch* touch, CCEvent* event){
@@ -258,47 +258,22 @@ void DrawMovie::ccTouchMoved(CCTouch* touch, CCEvent* event){
 		for (tag = 1;tag<=node::amount;tag++)     
 		{   
 			node* sprite= (node*)this->getChildByTag(tag);   
-		if (touchGetNode(sprite,touch,tag))
-		{   
-			targetNode = sprite;
-			node::currentTag = sprite->tag;
-			if(node::a[node::beforeTag][node::currentTag]==1)
-			{
-			runAnimate(targetNode);
+			if (isTouchGetNode(sprite,touch,tag))
+			{   
+				node::currentTag = sprite->tag;
+				lineAnimate(sprite);
+				runAnimate(sprite);
+
 //实现算法："如果不是第一个点，则当前点为i，触摸到点（j）的时候如果可连（a[i][j]==1）时，
 //将触摸点记录（即为i），a[i][j]=0,a[j][i]=0;触摸点开始闪，之前点停止闪烁"
-			node::a[node::beforeTag][node::currentTag]=0;
-			node::a[node::currentTag][node::beforeTag]=0;
-			node::count++;
-			node *bnode =(node*)this->getChildByTag(node::beforeTag);
-			bnode->stopAllActions();
-			
-			node *beforeNode = (node *)this->getChildByTag(node::beforeTag);
-			int beforeNodeTag = beforeNode->tag,targetNodeTag = targetNode->tag;
-			
-			//使beforeNodeTag为较小的tag
-			if(beforeNodeTag>targetNodeTag)
-			{
-				int c=beforeNodeTag;
-				beforeNodeTag =	targetNodeTag;
-				targetNodeTag = c;
+				node::a[node::beforeTag][node::currentTag]=0;
+				node::a[node::currentTag][node::beforeTag]=0;
+				node::count++;
+				node *bnode =(node*)this->getChildByTag(node::beforeTag);
+				bnode->stopAllActions();
+				node::beforeTag = sprite->tag;
 			}
-			int lineTag = beforeNodeTag*100+targetNodeTag;
-			line *targetLine = (line *)this->getChildByTag(lineTag);
-			runAnimate(targetLine);
-			if(line::beforeTag!=0)
-			{
-				line *bline = (line*)this->getChildByTag(line::beforeTag);
-				bline->stopAllActions();
-			}
-			node::beforeTag = sprite->tag;
-			line::beforeTag = lineTag;
-			
-			
 		}
-	}
-		
-	}
 	}
 	if(node::count == 7)
 		for(int i =1;i<=5;i++)
@@ -312,10 +287,7 @@ void DrawMovie::ccTouchMoved(CCTouch* touch, CCEvent* event){
 void DrawMovie::ccTouchEnded(CCTouch* touch, CCEvent* event)
 {
 	CCLOG("ccTouchEnded");
-
-
 }
-
 
 void DrawMovie::menuCloseCallback(CCObject* pSender)
 {
