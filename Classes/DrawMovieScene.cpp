@@ -141,7 +141,7 @@ bool DrawMovie::init()
 	line **lines = (line**)new line;
 	int k = 0;
 	for(int i = 1;i<=node::amount;i++)
-		for(int j=i;j<=node::amount;j++)
+		for(int j=i+1;j<=node::amount;j++)
 			if(node::a[i][j]==1)
 			{
 				k++;	
