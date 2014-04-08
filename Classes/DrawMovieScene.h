@@ -6,20 +6,20 @@ USING_NS_CC;
 class DrawMovie : public cocos2d::CCLayer
 {
 public:
-	//ÉùÃ÷ÍÏÎ²Àà
+	//å£°æ˜æ‹–å°¾ç±»
 	CCMotionStreak* strike;
-	//»®Ïßº¯Êı
+	//åˆ’çº¿å‡½æ•°
 	void drawLine(node *p1,node *p2);
 	void drawLines();
 	bool isTouchGetNode(node *sprite,CCTouch* touch,int tag);
 	void lineAnimate(node *sprite);
-	//ÏìÓ¦´¥ÆÁ¶¯×÷
-	//ÖØĞ´´¥ÆÁ»Øµ÷º¯Êı
+	//å“åº”è§¦å±åŠ¨ä½œ
+	//é‡å†™è§¦å±å›è°ƒå‡½æ•°
 	virtual bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
 	virtual void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
 	virtual void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event);
 	
-	//ÖØĞ´ÉúÃüÖÜÆÚº¯Êı
+	//é‡å†™ç”Ÿå‘½å‘¨æœŸå‡½æ•°
 	virtual void onEnter();
 	virtual void onExit();
 

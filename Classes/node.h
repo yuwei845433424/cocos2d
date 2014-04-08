@@ -3,7 +3,7 @@
 class node: public cocos2d::CCSprite
 {
 public:
-	//ÊôĞÔ
+	//å±æ€§
 	int tag;
 	int color;
 	int id;
@@ -14,7 +14,7 @@ public:
 	static int beforeTag ;
 	static int currentTag ;
 
-	//´ø²ÎÊıµÄ¹¹Ôìº¯ÊıÍê³ÉÁË×ø±êµÄÈ·¶¨¡¢Í¼Æ¬µÄÑ¡È¡¡¢amount×Ô¼Ó¡¢id¡¢tag¸´ÖÆ
+	//å¸¦å‚æ•°çš„æ„é€ å‡½æ•°å®Œæˆäº†åæ ‡çš„ç¡®å®šã€å›¾ç‰‡çš„é€‰å–ã€amountè‡ªåŠ ã€idã€tagå¤åˆ¶
 	node(int positionX, int positionY);
 	node(void);
 	~node(void);

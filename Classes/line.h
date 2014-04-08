@@ -4,7 +4,7 @@
 class line: public cocos2d::CCSprite
 {
 public:
-	//ÊôĞÔ
+	//å±æ€§
 	int tag;
 	int color;
 	int currentNodeTag;
@@ -14,7 +14,7 @@ public:
 	static int count;
 	static int beforeTag;
 
-	//´ø²ÎÊıµÄ¹¹Ôìº¯ÊıÍê³ÉÁË×ø±êµÄÈ·¶¨¡¢Í¼Æ¬µÄÑ¡È¡¡¢amount×Ô¼Ó¡¢id¡¢tag¸´ÖÆ
+	//å¸¦å‚æ•°çš„æ„é€ å‡½æ•°å®Œæˆäº†åæ ‡çš„ç¡®å®šã€å›¾ç‰‡çš„é€‰å–ã€amountè‡ªåŠ ã€idã€tagå¤åˆ¶
 	line(int positionX, int positionY,int currentNodeTag,int beforeNodeTag);
 	line(void);
 	~line(void);

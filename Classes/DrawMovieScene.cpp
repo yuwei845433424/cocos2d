@@ -3,7 +3,7 @@
 #include"line.h"
 
 USING_NS_CC;
-//¶ÔnodeºÍlineµÄ¾²Ì¬±äÁ¿µÄ³õÊ¼»¯
+//å¯¹nodeå’Œlineçš„é™æ€å˜é‡çš„åˆå§‹åŒ–
 int node::a[6][6];
 int node::amount = 0;
 bool node::start = true;
@@ -15,7 +15,7 @@ int line::amount = 0;
 int line::count = 0;
 int line::beforeTag = 0;
 
-//ÓÃ¶şÎ¬Êı×éÃèÊöµãÓëµãÖ®¼äµÄ¹ØÏµ
+//ç”¨äºŒç»´æ•°ç»„æè¿°ç‚¹ä¸ç‚¹ä¹‹é—´çš„å…³ç³»
 void shuzu(int a[6][6])
 {
 	a[1][2] = 1;
@@ -44,7 +44,7 @@ void shuzu(int a[6][6])
 
 }
 
-//ÉÁË¸¶¯»­
+//é—ªçƒåŠ¨ç”»
 
 void runAnimate(node *targetNode)
 {
@@ -52,9 +52,9 @@ void runAnimate(node *targetNode)
 		animation->addSpriteFrameWithFileName("jd.png");
 		animation->addSpriteFrameWithFileName("jd~.png");
 
-		animation->setDelayPerUnit(2.8f / 14.0f);//±ØĞëÉèÖÃ·ñÔò²»»á¶¯Ì¬²¥·Å
-		animation->setRestoreOriginalFrame(true);//ÊÇ·ñ»Øµ½µÚÒ»Ö¡
-		animation->setLoops(-1);//ÖØ¸´´ÎÊı £¨-1:ÎŞÏŞÑ­»·£©
+		animation->setDelayPerUnit(2.8f / 14.0f);//å¿…é¡»è®¾ç½®å¦åˆ™ä¸ä¼šåŠ¨æ€æ’­æ”¾
+		animation->setRestoreOriginalFrame(true);//æ˜¯å¦å›åˆ°ç¬¬ä¸€å¸§
+		animation->setLoops(-1);//é‡å¤æ¬¡æ•° ï¼ˆ-1:æ— é™å¾ªç¯ï¼‰
 		
 		CCFiniteTimeAction * animate = CCAnimate::create(animation);
 		targetNode->runAction(animate);
@@ -65,9 +65,9 @@ void runAnimate(line *targetLine)
 		animation->addSpriteFrameWithFileName("jd.png");
 		animation->addSpriteFrameWithFileName("jd~.png");
 
-		animation->setDelayPerUnit(2.8f / 14.0f);//±ØĞëÉèÖÃ·ñÔò²»»á¶¯Ì¬²¥·Å
-		animation->setRestoreOriginalFrame(true);//ÊÇ·ñ»Øµ½µÚÒ»Ö¡
-		animation->setLoops(-1);//ÖØ¸´´ÎÊı £¨-1:ÎŞÏŞÑ­»·£©
+		animation->setDelayPerUnit(2.8f / 14.0f);//å¿…é¡»è®¾ç½®å¦åˆ™ä¸ä¼šåŠ¨æ€æ’­æ”¾
+		animation->setRestoreOriginalFrame(true);//æ˜¯å¦å›åˆ°ç¬¬ä¸€å¸§
+		animation->setLoops(-1);//é‡å¤æ¬¡æ•° ï¼ˆ-1:æ— é™å¾ªç¯ï¼‰
 		
 		CCFiniteTimeAction * animate = CCAnimate::create(animation);
 		targetLine->runAction(animate);
@@ -78,7 +78,7 @@ void DrawMovie::lineAnimate(node *targetNode)
 	{
 		node *beforeNode = (node *)this->getChildByTag(node::beforeTag);
 		int beforeNodeTag = beforeNode->tag,targetNodeTag = targetNode->tag;
-		//Ê¹beforeNodeTagÎª½ÏĞ¡µÄtag
+		//ä½¿beforeNodeTagä¸ºè¾ƒå°çš„tag
 		if(beforeNodeTag>targetNodeTag)
 		{
 			int c=beforeNodeTag;
@@ -94,7 +94,7 @@ void DrawMovie::lineAnimate(node *targetNode)
 	}
 
 }
-//ÓÃ¾ØĞÎ½«¾«Áé°üÆğÀ´£¬È»ºóÍ¨¹ıÅĞ¶Ï´¥ÃşµÄµãµÄpositionÊÇ·ñÔÚ¾ØĞÎÄÚÅĞ¶ÏÊÇ·ñ´¥Åöµ½ÁË¾«Áé
+//ç”¨çŸ©å½¢å°†ç²¾çµåŒ…èµ·æ¥ï¼Œç„¶åé€šè¿‡åˆ¤æ–­è§¦æ‘¸çš„ç‚¹çš„positionæ˜¯å¦åœ¨çŸ©å½¢å†…åˆ¤æ–­æ˜¯å¦è§¦ç¢°åˆ°äº†ç²¾çµ
 bool DrawMovie::isTouchGetNode(node *sprite,CCTouch* touch,int tag)
 {
 		
@@ -129,11 +129,11 @@ bool DrawMovie::init()
 	{
 		return false;
 	}
-	this->strike=CCMotionStreak::create(1.0f,//Î²°Í³ÖĞøµÄÊ±¼ä
-			16.0f,//Î²°Í´óĞ¡
-			16.0f,//Í¼Æ¬µÄ´óĞ¡
-			ccc3(255,255,0),//ÑÕÉ«
-			"jd.png"//Ê¹ÓÃµÄÍ¼Æ¬
+	this->strike=CCMotionStreak::create(1.0f,//å°¾å·´æŒç»­çš„æ—¶é—´
+			16.0f,//å°¾å·´å¤§å°
+			16.0f,//å›¾ç‰‡çš„å¤§å°
+			ccc3(255,255,0),//é¢œè‰²
+			"jd.png"//ä½¿ç”¨çš„å›¾ç‰‡
 			);
 		addChild(strike,1);
 		strike->setPosition(ccp(240,160));
@@ -173,7 +173,7 @@ bool DrawMovie::init()
 	this->addChild(node3,0,node3->tag);
 	this->addChild(node4,0,node4->tag);
 	this->addChild(node5,0,node5->tag);
-	//´´½¨lines
+	//åˆ›å»ºlines
 	line **lines = (line**)new line;
 	int xLine = 0;
 	for(int i = 1;i<=node::amount;i++)
@@ -201,10 +201,10 @@ void DrawMovie::onExit(){
 	CCLayer::onExit();
 }
 
-/*ÓÃÈ«¾Ö±äÁ¿start£¬ÅĞ¶ÏÊÇ·ñÊÇµÚÒ»¸ö´¥Ãşµã¡£
-Èç¹û²»ÊÇµÚÒ»¸öµã£¬Ôòµ±Ç°µãÎªi£¬´¥Ãşµ½µã£¨j£©µÄÊ±ºòÈç¹û¿ÉÁ¬£¨a[i][j]==1£©Ê±£¬
-½«´¥Ãşµã¼ÇÂ¼£¨¼´Îªi£©£¬a[i][j]=0,a[j][i]=0;´¥Ãşµã¿ªÊ¼ÉÁ£¬Ö®Ç°µãÍ£Ö¹ÉÁË¸
-Èô³É¹¦´¥Ãş7¸öÏß¶Î£¬ËùÓĞµã¿ªÊ¼ÁÁ
+/*ç”¨å…¨å±€å˜é‡startï¼Œåˆ¤æ–­æ˜¯å¦æ˜¯ç¬¬ä¸€ä¸ªè§¦æ‘¸ç‚¹ã€‚
+å¦‚æœä¸æ˜¯ç¬¬ä¸€ä¸ªç‚¹ï¼Œåˆ™å½“å‰ç‚¹ä¸ºiï¼Œè§¦æ‘¸åˆ°ç‚¹ï¼ˆjï¼‰çš„æ—¶å€™å¦‚æœå¯è¿ï¼ˆa[i][j]==1ï¼‰æ—¶ï¼Œ
+å°†è§¦æ‘¸ç‚¹è®°å½•ï¼ˆå³ä¸ºiï¼‰ï¼Œa[i][j]=0,a[j][i]=0;è§¦æ‘¸ç‚¹å¼€å§‹é—ªï¼Œä¹‹å‰ç‚¹åœæ­¢é—ªçƒ
+è‹¥æˆåŠŸè§¦æ‘¸7ä¸ªçº¿æ®µï¼Œæ‰€æœ‰ç‚¹å¼€å§‹äº®
 
 */
 bool DrawMovie::ccTouchBegan(CCTouch* touch, CCEvent* event)
@@ -240,20 +240,20 @@ bool DrawMovie::ccTouchBegan(CCTouch* touch, CCEvent* event)
 				lineAnimate(sprite);
 				runAnimate(sprite);	
 
-//ÊµÏÖËã·¨£º"Èç¹û²»ÊÇµÚÒ»¸öµã£¬Ôòµ±Ç°µãÎªi£¬´¥Ãşµ½µã£¨j£©µÄÊ±ºòÈç¹û¿ÉÁ¬£¨a[i][j]==1£©Ê±£¬
-//½«´¥Ãşµã¼ÇÂ¼£¨¼´Îªi£©£¬a[i][j]=0,a[j][i]=0;´¥Ãşµã¿ªÊ¼ÉÁ£¬Ö®Ç°µãÍ£Ö¹ÉÁË¸"	
+//å®ç°ç®—æ³•ï¼š"å¦‚æœä¸æ˜¯ç¬¬ä¸€ä¸ªç‚¹ï¼Œåˆ™å½“å‰ç‚¹ä¸ºiï¼Œè§¦æ‘¸åˆ°ç‚¹ï¼ˆjï¼‰çš„æ—¶å€™å¦‚æœå¯è¿ï¼ˆa[i][j]==1ï¼‰æ—¶ï¼Œ
+//å°†è§¦æ‘¸ç‚¹è®°å½•ï¼ˆå³ä¸ºiï¼‰ï¼Œa[i][j]=0,a[j][i]=0;è§¦æ‘¸ç‚¹å¼€å§‹é—ªï¼Œä¹‹å‰ç‚¹åœæ­¢é—ªçƒ"	
 				node::a[node::beforeTag][node::currentTag]=0;
 				node::a[node::currentTag][node::beforeTag]=0;
 				node::count++;
 				node *bnode =(node*)this->getChildByTag(node::beforeTag);
 				bnode->stopAllActions(); 
-			//Ìí¼Ó¼ÇÂ¼ÁËlineµÄbeforeTag	
+			//æ·»åŠ è®°å½•äº†lineçš„beforeTag	
 				node::beforeTag = sprite->tag;
 				return true;
 			}
 		}	
 	}
-	//³É¹¦ºóËùÓĞµãÉÁ
+	//æˆåŠŸåæ‰€æœ‰ç‚¹é—ª
 	if(node::count == 7)
 		for(int i =1;i<=5;i++)
 		{
@@ -278,8 +278,8 @@ void DrawMovie::ccTouchMoved(CCTouch* touch, CCEvent* event){
 				lineAnimate(sprite);
 				runAnimate(sprite);
 
-//ÊµÏÖËã·¨£º"Èç¹û²»ÊÇµÚÒ»¸öµã£¬Ôòµ±Ç°µãÎªi£¬´¥Ãşµ½µã£¨j£©µÄÊ±ºòÈç¹û¿ÉÁ¬£¨a[i][j]==1£©Ê±£¬
-//½«´¥Ãşµã¼ÇÂ¼£¨¼´Îªi£©£¬a[i][j]=0,a[j][i]=0;´¥Ãşµã¿ªÊ¼ÉÁ£¬Ö®Ç°µãÍ£Ö¹ÉÁË¸"
+//å®ç°ç®—æ³•ï¼š"å¦‚æœä¸æ˜¯ç¬¬ä¸€ä¸ªç‚¹ï¼Œåˆ™å½“å‰ç‚¹ä¸ºiï¼Œè§¦æ‘¸åˆ°ç‚¹ï¼ˆjï¼‰çš„æ—¶å€™å¦‚æœå¯è¿ï¼ˆa[i][j]==1ï¼‰æ—¶ï¼Œ
+//å°†è§¦æ‘¸ç‚¹è®°å½•ï¼ˆå³ä¸ºiï¼‰ï¼Œa[i][j]=0,a[j][i]=0;è§¦æ‘¸ç‚¹å¼€å§‹é—ªï¼Œä¹‹å‰ç‚¹åœæ­¢é—ªçƒ"
 				node::a[node::beforeTag][node::currentTag]=0;
 				node::a[node::currentTag][node::beforeTag]=0;
 				node::count++;

@@ -23,14 +23,14 @@ line* line::create(node *p1,node *p2)
 	float lineX = (p1X+p2X)/2;
 	float lineY = (p1Y+p2Y)/2;
 	line *newline = new line(lineX,lineY,p1->tag,p2->tag);
-	//È¡Á½µãÖÐ¼äµÄÎ»ÖÃÎªposition£¬È¡·Å´ó±¶Êý£¬
+	//å–ä¸¤ç‚¹ä¸­é—´çš„ä½ç½®ä¸ºpositionï¼Œå–æ”¾å¤§å€æ•°ï¼Œ
 	CCSize lineSize ;
 	float bigWidth = (p1X-p2X)*(p1X-p2X)+(p1Y-p2Y)*(p1Y-p2Y);
 	float newLineWidth = sqrt(bigWidth);
 	lineSize = newline->getContentSize();
 	float newScaleX = newLineWidth/lineSize.width;
 	newline->setScaleX(newScaleX); 
-	//ÉèÖÃÇãÐ±½Ç¶È
+	//è®¾ç½®å€¾æ–œè§’åº¦
 
 	float newRotation = -(180/3.14)*acos((p2X-p1X)/newLineWidth);
 	newline->setRotation(newRotation);
