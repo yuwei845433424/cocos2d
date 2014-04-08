@@ -138,9 +138,23 @@ bool DrawMovie::init()
 		addChild(strike,1);
 		strike->setPosition(ccp(240,160));
 	shuzu(node::a);
+
 	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
 	CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 		// add "DrawMovie" splash screen"
+	CCMenuItemImage *pCloseItem = CCMenuItemImage::create(
+										"CloseNormal.png",
+										"CloseSelected.png",
+										this,
+										menu_selector(DrawMovie::menuReInit));
+	
+	pCloseItem->setPosition(ccp(origin.x + visibleSize.width - pCloseItem->getContentSize().width/2 ,
+								origin.y + pCloseItem->getContentSize().height/2));
+
+	// create menu, it's an autorelease object
+	CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
+	pMenu->setPosition(CCPointZero);
+	this->addChild(pMenu,1);
 	CCSprite* pSprite = CCSprite::create("up.png");
 
 	// position the sprite on the center of the screen
@@ -219,23 +233,23 @@ bool DrawMovie::ccTouchBegan(CCTouch* touch, CCEvent* event)
 		for (tag = 1;tag<=node::amount;tag++)     
 		{   
 			node* sprite= (node*)this->getChildByTag(tag);   
-		if (isTouchGetNode(sprite,touch,tag))
-		{   
-			sprite = sprite;
-			node::currentTag = sprite->tag;
-			lineAnimate(sprite);
-			runAnimate(sprite);	
+			if (isTouchGetNode(sprite,touch,tag)&&tag!=node::beforeTag)
+			{   
+				sprite = sprite;
+				node::currentTag = sprite->tag;
+				lineAnimate(sprite);
+				runAnimate(sprite);	
 
 //实现算法："如果不是第一个点，则当前点为i，触摸到点（j）的时候如果可连（a[i][j]==1）时，
 //将触摸点记录（即为i），a[i][j]=0,a[j][i]=0;触摸点开始闪，之前点停止闪烁"	
-			node::a[node::beforeTag][node::currentTag]=0;
-			node::a[node::currentTag][node::beforeTag]=0;
-			node::count++;
-			node *bnode =(node*)this->getChildByTag(node::beforeTag);
-			bnode->stopAllActions(); 
+				node::a[node::beforeTag][node::currentTag]=0;
+				node::a[node::currentTag][node::beforeTag]=0;
+				node::count++;
+				node *bnode =(node*)this->getChildByTag(node::beforeTag);
+				bnode->stopAllActions(); 
 			//添加记录了line的beforeTag	
-			node::beforeTag = sprite->tag;
-			return true;
+				node::beforeTag = sprite->tag;
+				return true;
 			}
 		}	
 	}
@@ -258,7 +272,7 @@ void DrawMovie::ccTouchMoved(CCTouch* touch, CCEvent* event){
 		for (tag = 1;tag<=node::amount;tag++)     
 		{   
 			node* sprite= (node*)this->getChildByTag(tag);   
-			if (isTouchGetNode(sprite,touch,tag))
+			if (isTouchGetNode(sprite,touch,tag)&&tag!=node::beforeTag)
 			{   
 				node::currentTag = sprite->tag;
 				lineAnimate(sprite);
@@ -288,7 +302,26 @@ void DrawMovie::ccTouchEnded(CCTouch* touch, CCEvent* event)
 {
 	CCLOG("ccTouchEnded");
 }
+void DrawMovie::menuReInit(CCObject* pSender)
+{
+	shuzu(node::a);
+	for(int i =1;i<=5;i++)
+	{
+		node *Node = (node*)this->getChildByTag(i);
+		Node->stopAllActions();
+		node::start = true;
+	}
 
+	for(int i = 1;i<=node::amount;i++)
+		for(int j=i+1;j<=node::amount;j++)
+			if(node::a[i][j]==1)
+			{
+				int lineTag = i*100+j;
+				line *targetLine = (line *)this->getChildByTag(lineTag);
+				targetLine->stopAllActions();
+			}
+
+}
 void DrawMovie::menuCloseCallback(CCObject* pSender)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
